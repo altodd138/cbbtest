@@ -1,0 +1,10 @@
+Package: cbbtest
+Title: Test out the Package System, and Git
+Version: 0.0.0.9000
+Authors@R: 
+    person("Alec", "Todd", , "altodd138@gmail.com", role = c("aut", "cre"))
+Description: A test package.
+License: GPL (>= 3)
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.0.0

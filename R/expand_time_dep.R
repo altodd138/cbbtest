@@ -78,7 +78,7 @@ as.stepfun.time_dep <- function(dat) {
 
 # Plots the numeric-coded step function of a time-dependent variable
 plot.time_dep <- function(dat) {
-  stats::plot.stepfun(as.stepfun(dat)$f_num)
+  stats::plot.stepfun(as.stepfun.time_dep(dat)$f_num)
 }
 
 # Converts a single-row data frame 'dat' to a long format, using

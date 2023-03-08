@@ -2,6 +2,27 @@
 # a "time-dependent" data frame. The value of the variable changes at time s to
 # the value x corresponding to s. In other words, x is the value of the variable
 # on (s, t], where t is the next time the variable changes, possibly Inf
+
+
+#' Create a time-dependent variable
+#'
+#' Given a vector of times (ordered), and values (factor or numeric), forms a
+#' "time-dependent" data frame. The value of the variable changes at time s to
+#' the value x corresponding to s. In other words, x is the value of the
+#' variable on (s, t], where t is the next time the variable changes, possibly
+#' Inf
+#'
+#' @param time Numeric vector. Must contain `-Inf`, and may include `Inf`
+#' @param value Values taken at various times. the value at `-Inf` is the value
+#'   of the variable before any finite time.
+#' @param check If `TRUE`, checks whether the input is valid.
+#'
+#' @return A data frame of class `time_dep`.
+#' @export
+#'
+#' @examples
+#' x <- time_dep(c(5.1, -Inf), c(1, 0))
+#' x
 time_dep <- function(time, value, check = TRUE) {
   # Validate input
   if (check) {
@@ -44,8 +65,8 @@ bin_time_dep <- function(time, value_l = 0, value_r = 1, levels = NULL) {
 as.stepfun.time_dep <- function(dat) {
   f_num <- `if`(
     nrow(dat) == 1,
-    stepfun(0, rep(as.numeric(dat$value), 2), right = TRUE),
-    stepfun(dat$time[-1], as.numeric(dat$value), right = TRUE)
+    stats::stepfun(0, rep(as.numeric(dat$value), 2), right = TRUE),
+    stats::stepfun(dat$time[-1], as.numeric(dat$value), right = TRUE)
   )
   f <- `if`(
     is.numeric(dat$value),
@@ -57,7 +78,7 @@ as.stepfun.time_dep <- function(dat) {
 
 # Plots the numeric-coded step function of a time-dependent variable
 plot.time_dep <- function(dat) {
-  plot(as.stepfun(dat)$f_num)
+  stats::plot.stepfun(as.stepfun(dat)$f_num)
 }
 
 # Converts a single-row data frame 'dat' to a long format, using
@@ -110,7 +131,7 @@ expand_time_dep <- function(
     dat_dep <- data.frame(c(t_start[i], breaks), c(breaks, t_stop[i]))
     names(dat_dep) <- c(start_str, stop_str)
     for (name in time_dep_str) {
-      f <- as.stepfun(dat[[name]][[i]])$f
+      f <- stats::as.stepfun(dat[[name]][[i]])$f
       dat_dep[[name]] <- f(dat_dep[[stop_str]])
     }
 

@@ -44,6 +44,7 @@ time_dep <- function(time, value, check = TRUE) {
 
   # Combine times for which the value does not change, and return
   dat <- dat[!equals_previous(dat$value), ]
+  rownames(dat) <- NULL
   class(dat) <- c("time_dep", class(dat))
   dat
 }
